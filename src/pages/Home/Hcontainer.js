@@ -3,24 +3,35 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 100%;
-  margin-top: 50px;
+  margin-top: 0px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
 `;
 const ConWrap = styled.div`
+  height: 220px;
   border-radius: 20px;
   box-shadow: 0px 0px 5px 5px #e2e2e2;
   margin-top: 30px;
-  padding: 20px;
+  padding: 8px;
 `;
 const TextWrap = styled.div`
   color: black;
-  padding: 20px;
-  border-bottom: 1px solid black;
+  margin-top: 10px;
+  border-top: 1px solid black;
+  h2 {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  p {
+    font-size: 14px;
+    opacity: 0.7;
+  }
 `;
 
 const ImgWrap = styled.div`
-  width: 100%;
-  height: 380px;
-  margin-top: 20px;
+  height: 110px;
   img {
     height: 100%;
     object-fit: cover;
@@ -39,16 +50,16 @@ export const Hcontainer = ({ condata }) => {
             state={{ result: data }}
           >
             <ConWrap>
-              <TextWrap>
-                <h2>{data.entpName}</h2>
-                <p>{data.itemName}</p>
-              </TextWrap>
               <ImgWrap>
                 <img
                   src={data?.itemImage ? data.itemImage : Noimg}
                   alt={data.itemName}
                 ></img>
               </ImgWrap>
+              <TextWrap>
+                <h2>{data.entpName}</h2>
+                <p>{data.itemName}</p>
+              </TextWrap>
             </ConWrap>
           </Link>
         ))}

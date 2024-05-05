@@ -7,6 +7,7 @@ ${reset}
 body{
     box-sizing: border-box;
     font-family: "Noto Sans KR", sans-serif;
+    letter-spacing: -1px;
 }
 img{
     width: 100%;

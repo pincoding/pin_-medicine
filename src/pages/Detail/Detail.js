@@ -1,3 +1,11 @@
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+} from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -6,7 +14,7 @@ const Wrap = styled.div`
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  background-color: teal;
+  background-color: #f5f5f5;
   padding-bottom: 100px;
 `;
 const Container = styled.div`
@@ -14,6 +22,8 @@ const Container = styled.div`
 `;
 const ImgWrap = styled.div`
   height: 300px;
+  box-shadow: 0px 0px 5px 5px #e9ecef;
+  border-radius: 20px;
   img {
     height: 100%;
     object-fit: cover;
@@ -22,21 +32,19 @@ const ImgWrap = styled.div`
 `;
 const TextWrap = styled.div`
   background-color: white;
-  border-radius: 20px;
   margin-top: 20px;
-  background-color: skyblue;
+  background-color: #ffff;
+  border-radius: 20px;
 `;
 const TextCon = styled.div`
-  padding: 20px;
+  padding: 10px 20px;
   h2 {
-    font-size: 18px;
-    font-family: 900;
+    font-size: 16px;
+    font-weight: 600;
   }
   p {
-    margin-top: 10px;
     font-size: 14px;
     opacity: 0.7;
-    line-height: 20px;
   }
 `;
 
@@ -46,6 +54,63 @@ export const Detail = () => {
 
   const Noimg = "https://dhub.dgist.ac.kr/resources/images/common/no_img.jpg";
   console.log(state?.result);
+
+  const titleValue = [
+    {
+      id: 0,
+      htitle: "업체명",
+      ptitle: `${state?.result?.entpName}`,
+    },
+    {
+      id: 1,
+      htitle: "제품명",
+      ptitle: `${state?.result?.itemName}`,
+    },
+    {
+      id: 2,
+      htitle: "품목기준코드",
+      ptitle: `${state?.result?.itemSeq}`,
+    },
+  ];
+
+  const dataValue = [
+    {
+      id: 0,
+      htext: "이 약의 효능은 무엇입니까?",
+      phtext: `${state?.result?.efcyQesitm}`,
+    },
+    {
+      id: 1,
+      htext: "이 약은 어떻게 사용합니까?",
+      phtext: `${state?.result?.useMethodQesitm}`,
+    },
+    {
+      id: 2,
+      htext: "이 약을 사용하기 전에 반드시 알아야 할 내용은 무엇입니까?",
+      phtext: `${state?.result?.atpnWarnQesitm}`,
+    },
+    {
+      id: 3,
+      htext: "이 약의 사용상 주의사항은 무엇입니까?",
+      phtext: `${state?.result?.atpnQesitm}`,
+    },
+    {
+      id: 4,
+      htext: "이 약을 사용하는 동안 주의해야 할 약 또는 음식은 무엇입니까?",
+      phtext: `${state?.result?.intrcQesitm}`,
+    },
+    {
+      id: 5,
+      htext: "이 약은 어떤 이상반응이 나타날 수 있습니까?",
+      phtext: `${state?.result?.seQesitm}`,
+    },
+    {
+      id: 6,
+      htext: "이 약은 어떻게 보관해야 합니까?",
+      phtext: `${state?.result?.depositMethodQesitm}`,
+    },
+  ];
+
   return (
     <Wrap>
       <Container>
@@ -55,50 +120,48 @@ export const Detail = () => {
             alt=""
           ></img>
         </ImgWrap>
+
         <TextWrap>
-          <TextCon>
-            <h2>업체명</h2>
-            <p>{state?.result?.entpName}</p>
-          </TextCon>
-          <TextCon>
-            <h2>제품명</h2>
-            <p>{state?.result?.itemName}</p>
-          </TextCon>
-          <TextCon>
-            <h2>품목기준코드</h2>
-            <p>{state?.result?.itemSeq}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약의 효능은 무엇입니까?</h2>
-            <p>{state?.result?.efcyQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약은 어떻게 사용합니까?</h2>
-            <p>{state?.result?.useMethodQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약을 사용하기 전에 반드시 알아야 할 내용은 무엇입니까?</h2>
-            <p>{state?.result?.atpnWarnQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약의 사용상 주의사항은 무엇입니까?</h2>
-            <p>{state?.result?.atpnQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>
-              이 약을 사용하는 동안 주의해야 할 약 또는 음식은 무엇입니까?
-            </h2>
-            <p>{state?.result?.intrcQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약은 어떤 이상반응이 나타날 수 있습니까?</h2>
-            <p>{state?.result?.seQesitm}</p>
-          </TextCon>
-          <TextCon>
-            <h2>이 약은 어떻게 보관해야 합니까?</h2>
-            <p>{state?.result?.depositMethodQesitm}</p>
-          </TextCon>
+          {titleValue.map((data) => (
+            <TextCon>
+              <h2>{data.htitle}</h2>
+              <p>{data.ptitle}</p>
+            </TextCon>
+          ))}
         </TextWrap>
+
+        <Box mt={"20px"} borderRadius={"20px"} bg={"#fff"}>
+          {dataValue.map((data) => (
+            <Accordion allowToggle>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton padding={"15px 20px"} _hover={"none"}>
+                    <Box
+                      as="span"
+                      flex="1"
+                      textAlign="left"
+                      display={"flex"}
+                      alignItems={"center"}
+                      fontSize={"16px"}
+                      fontWeight={"400"}
+                    >
+                      <h2>{data.htext}</h2>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel
+                  padding={"10px 20px"}
+                  border={"none"}
+                  bg={"gray.100"}
+                  fontSize={"14px"}
+                >
+                  <p style={{ opacity: "0.7" }}>{data.phtext}</p>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          ))}
+        </Box>
       </Container>
     </Wrap>
   );
