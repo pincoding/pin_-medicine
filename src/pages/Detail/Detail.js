@@ -6,6 +6,8 @@ import {
   AccordionPanel,
   Box,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -50,7 +52,14 @@ const TextCon = styled.div`
 
 export const Detail = () => {
   const { state } = useLocation();
-  console.log(state?.result?.itemImage);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, [state]);
 
   const Noimg = "https://dhub.dgist.ac.kr/resources/images/common/no_img.jpg";
   console.log(state?.result);
@@ -113,6 +122,9 @@ export const Detail = () => {
 
   return (
     <Wrap>
+      <Helmet>
+        <title>자세히보기</title>
+      </Helmet>
       <Container>
         <ImgWrap>
           <img
@@ -135,7 +147,7 @@ export const Detail = () => {
             <Accordion allowToggle>
               <AccordionItem>
                 <h2>
-                  <AccordionButton padding={"15px 20px"} _hover={"none"}>
+                  <AccordionButton padding={"15px 20px"}>
                     <Box
                       as="span"
                       flex="1"

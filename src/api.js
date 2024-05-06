@@ -6,10 +6,9 @@ const key =
 const instance = axios.create({
   baseURL: "http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/",
   params: {
-    pageNo: 1,
-    numOfRows: 10,
     type: "json",
     ServiceKey: key,
+    numOfRows: 20,
   },
 });
 

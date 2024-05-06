@@ -2,10 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getItems } from "../../api";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { Hcontainer } from "./Hcontainer";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { LengthMessage } from "./LengthMessage";
+import { Loading } from "../loading/Loading";
 
 const Wrap = styled.div`
   max-width: 450px;
@@ -90,10 +93,17 @@ const IconBox = styled.div`
     color: black;
   }
 `;
-
+const Errors = styled.div`
+  color: salmon;
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 20px;
+  position: relative;
+`;
 export const TitleItems = () => {
   const nav = useNavigate();
   const [productName, setproductName] = useState();
+  const [isloading, setIsLoading] = useState(true);
 
   const { data } = useQuery({
     queryKey: ["getDrbEasyDrugList", productName],
@@ -104,6 +114,10 @@ export const TitleItems = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   const onsubmitHandler = (d) => {
     const { usertext } = d;
@@ -123,34 +137,62 @@ export const TitleItems = () => {
   const dataValue = data?.body?.items;
 
   return (
-    <Wrap>
-      <Section01>
-        <FormWrap>
-          <TextWrap>
-            <h1>약찾기</h1>
-            <TextCon>
-              <h3 onClick={homeHandler}>약품명</h3>
-              <h3 onClick={comHandler}>업체명</h3>
-              <h3 onClick={codeHandler}>코드명</h3>
-            </TextCon>
-          </TextWrap>
-          <Form onSubmit={handleSubmit(onsubmitHandler)}>
-            <input
-              {...register("usertext", {
-                required: "코드 이름을 넣어주세요.",
-              })}
-              type="text"
-              placeholder="코드를 입력해주세요."
-              checked
-            ></input>
-            <IconBox>
-              <IoIosSearch />
-            </IconBox>
-          </Form>
-        </FormWrap>
-      </Section01>
+    <>
+      {isloading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <>
+          <Wrap>
+            <Helmet>
+              <title>홈 | 약품명</title>
+            </Helmet>
+            <Section01>
+              <FormWrap>
+                <TextWrap>
+                  <h1>약찾기</h1>
+                  <TextCon>
+                    <h3 onClick={homeHandler}>약품명</h3>
+                    <h3 onClick={comHandler}>업체명</h3>
+                    <h3 onClick={codeHandler}>코드명</h3>
+                  </TextCon>
+                </TextWrap>
+                <Form onSubmit={handleSubmit(onsubmitHandler)}>
+                  <input
+                    {...register("usertext", {
+                      required: "약품 이름을 넣어주세요.",
+                    })}
+                    type="text"
+                    placeholder="약품명 입력해주세요."
+                    checked
+                  ></input>
+                  <IconBox>
+                    <IoIosSearch />
+                  </IconBox>
+                </Form>
+                <Errors>{errors?.usertext?.message}</Errors>
+              </FormWrap>
+            </Section01>
+            {/* {valueData && (
+        <InfiniteScroll
+          dataLength={valueData.length}
+          next={axiosData}
+          hasMore={true}
+        > */}
+            {dataValue && dataValue.length > 0 ? (
+              <Hcontainer condata={dataValue} />
+            ) : (
+              <>
+                <LengthMessage></LengthMessage>
+              </>
+            )}
 
-      <Hcontainer condata={dataValue} />
-    </Wrap>
+            {/* </InfiniteScroll>
+      )} */}
+          </Wrap>
+        </>
+      )}
+    </>
   );
 };

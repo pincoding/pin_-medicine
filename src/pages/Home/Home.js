@@ -2,10 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getCompany, getMainBasic } from "../../api";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { Hcontainer } from "./Hcontainer";
 import { useNavigate } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { Helmet } from "react-helmet-async";
+import { LengthMessage } from "./LengthMessage";
+import { Loading } from "../loading/Loading";
 
 const Wrap = styled.div`
   max-width: 450px;
@@ -90,23 +94,59 @@ const IconBox = styled.div`
     color: black;
   }
 `;
+const Errors = styled.div`
+  color: salmon;
+  font-size: 12px;
+  font-weight: 600;
+  padding-left: 20px;
+  position: relative;
+`;
 
 export const Home = () => {
   // api keyword 넘겨주는 값
   const nav = useNavigate();
   const [productName, setproductName] = useState();
+  const [isloading, setIsLoading] = useState(true);
+  // const [resultData, setresultData] = useState();
+  // const [valueData, setValueData] = useState();
+  // const [pagenums, setPageNums] = useState(1);
 
   const { data: maindata } = useQuery({
     queryKey: ["getDrbEasyDrugList", productName],
     queryFn: getMainBasic,
   });
+  // useEffect(() => {
+  //   try {
+  //     setresultData(maindata);
+  //     setValueData(maindata?.body?.items);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [maindata]);
+
+  // const axiosData = async () => {
+  //   try {
+  //     let page = (resultData.body.pageNo += 1);
+  //     setPageNums(page);
+  //     if (resultData.body.pageNo <= resultData.body.totalCount) {
+  //       setValueData(valueData.concat(resultData));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // console.log(pagenums);
+  // /////////////////////////////////////////////////////////////////////////////
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const onsubmitHandler = (d) => {
     const { usertext } = d;
     setproductName(usertext);
@@ -124,35 +164,64 @@ export const Home = () => {
 
   const dataValue = maindata?.body?.items;
 
+  // console.log(dataValue.length);
   return (
-    <Wrap>
-      <Section01>
-        <FormWrap>
-          <TextWrap>
-            <h1>약찾기</h1>
-            <TextCon>
-              <h3 onClick={homeHandler}>약품명</h3>
-              <h3 onClick={comHandler}>업체명</h3>
-              <h3 onClick={codeHandler}>코드명</h3>
-            </TextCon>
-          </TextWrap>
-          <Form onSubmit={handleSubmit(onsubmitHandler)}>
-            <input
-              {...register("usertext", {
-                required: "약품 이름을 넣어주세요.",
-              })}
-              type="text"
-              placeholder="약품명 입력해주세요."
-              checked
-            ></input>
-            <IconBox>
-              <IoIosSearch />
-            </IconBox>
-          </Form>
-        </FormWrap>
-      </Section01>
+    <>
+      {isloading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        <>
+          <Wrap>
+            <Helmet>
+              <title>홈 | 약품명</title>
+            </Helmet>
+            <Section01>
+              <FormWrap>
+                <TextWrap>
+                  <h1>약찾기</h1>
+                  <TextCon>
+                    <h3 onClick={homeHandler}>약품명</h3>
+                    <h3 onClick={comHandler}>업체명</h3>
+                    <h3 onClick={codeHandler}>코드명</h3>
+                  </TextCon>
+                </TextWrap>
+                <Form onSubmit={handleSubmit(onsubmitHandler)}>
+                  <input
+                    {...register("usertext", {
+                      required: "약품 이름을 넣어주세요.",
+                    })}
+                    type="text"
+                    placeholder="약품명 입력해주세요."
+                    checked
+                  ></input>
+                  <IconBox>
+                    <IoIosSearch />
+                  </IconBox>
+                </Form>
+                <Errors>{errors?.usertext?.message}</Errors>
+              </FormWrap>
+            </Section01>
+            {/* {valueData && (
+        <InfiniteScroll
+          dataLength={valueData.length}
+          next={axiosData}
+          hasMore={true}
+        > */}
+            {dataValue && dataValue.length > 0 ? (
+              <Hcontainer condata={dataValue} />
+            ) : (
+              <>
+                <LengthMessage></LengthMessage>
+              </>
+            )}
 
-      <Hcontainer condata={dataValue} />
-    </Wrap>
+            {/* </InfiniteScroll>
+      )} */}
+          </Wrap>
+        </>
+      )}
+    </>
   );
 };

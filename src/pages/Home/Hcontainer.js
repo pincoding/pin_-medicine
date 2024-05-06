@@ -20,6 +20,7 @@ const TextWrap = styled.div`
   color: black;
   margin-top: 10px;
   border-top: 1px solid black;
+
   h2 {
     margin-top: 10px;
     font-size: 16px;
@@ -44,24 +45,22 @@ export const Hcontainer = ({ condata }) => {
     <Container>
       {condata &&
         condata.map((data) => (
-          <Link
-            key={data.itemSeq}
-            to={`/detail/${data.itemName}`}
-            state={{ result: data }}
-          >
-            <ConWrap>
-              <ImgWrap>
-                <img
-                  src={data?.itemImage ? data.itemImage : Noimg}
-                  alt={data.itemName}
-                ></img>
-              </ImgWrap>
-              <TextWrap>
-                <h2>{data.entpName}</h2>
-                <p>{data.itemName}</p>
-              </TextWrap>
-            </ConWrap>
-          </Link>
+          <div key={data.itemName}>
+            <Link to={`/detail/${data.itemName}`} state={{ result: data }}>
+              <ConWrap>
+                <ImgWrap>
+                  <img
+                    src={data?.itemImage ? data.itemImage : Noimg}
+                    alt={data.itemName}
+                  ></img>
+                </ImgWrap>
+                <TextWrap>
+                  <h2>{data.entpName}</h2>
+                  <p>{`${data.itemName.slice(0, 30)}`}</p>
+                </TextWrap>
+              </ConWrap>
+            </Link>
+          </div>
         ))}
     </Container>
   );
