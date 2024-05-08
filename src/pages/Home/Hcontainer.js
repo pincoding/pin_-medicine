@@ -12,9 +12,9 @@ const Container = styled.div`
 const ConWrap = styled.div`
   height: 220px;
   border-radius: 20px;
-  box-shadow: 0px 0px 5px 5px #e2e2e2;
+  box-shadow: 0px 0px 5px 5px  #e2e2e23b;
   margin-top: 30px;
-  padding: 8px;
+  padding: 12px;
 `;
 const TextWrap = styled.div`
   color: black;
@@ -24,6 +24,7 @@ const TextWrap = styled.div`
   h2 {
     margin-top: 10px;
     font-size: 16px;
+    font-weight: 600;
   }
   p {
     font-size: 14px;
@@ -36,7 +37,6 @@ const ImgWrap = styled.div`
   img {
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
   }
 `;
 const Noimg = "https://dhub.dgist.ac.kr/resources/images/common/no_img.jpg";
@@ -44,9 +44,10 @@ export const Hcontainer = ({ condata }) => {
   return (
     <Container>
       {condata &&
-        condata.map((data) => (
-          <div key={data.itemName}>
+        condata.map((data,index) => (
+          <div key={index}>
             <Link to={`/detail/${data.itemName}`} state={{ result: data }}>
+              {/* {console.log(data)} */}
               <ConWrap>
                 <ImgWrap>
                   <img

@@ -134,8 +134,8 @@ export const Detail = () => {
         </ImgWrap>
 
         <TextWrap>
-          {titleValue.map((data) => (
-            <TextCon>
+          {titleValue.map((data,index) => (
+            <TextCon key={index}>
               <h2>{data.htitle}</h2>
               <p>{data.ptitle}</p>
             </TextCon>
@@ -143,8 +143,9 @@ export const Detail = () => {
         </TextWrap>
 
         <Box mt={"20px"} borderRadius={"20px"} bg={"#fff"}>
-          {dataValue.map((data) => (
-            <Accordion allowToggle>
+          {dataValue.map((data,index) => (
+        
+            <Accordion allowToggle key={index}>
               <AccordionItem>
                 <h2>
                   <AccordionButton padding={"15px 20px"}>
@@ -172,6 +173,7 @@ export const Detail = () => {
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
+        
           ))}
         </Box>
       </Container>

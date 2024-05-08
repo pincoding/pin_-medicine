@@ -13,9 +13,9 @@ const instance = axios.create({
 });
 
 export const getMainBasic = ({ queryKey }) => {
-  const [getDrbEasyDrugList, keyword] = queryKey;
+  const [getDrbEasyDrugList, keyword, pages] = queryKey;
   return instance
-    .get(`${getDrbEasyDrugList}?itemName=${keyword}`)
+    .get(`${getDrbEasyDrugList}?itemName=${keyword}&pageNo=${pages}`)
     .then((res) => res.data);
 };
 export const getCompany = ({ queryKey }) => {

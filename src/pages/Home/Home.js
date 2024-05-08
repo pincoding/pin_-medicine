@@ -107,35 +107,35 @@ export const Home = () => {
   const nav = useNavigate();
   const [productName, setproductName] = useState();
   const [isloading, setIsLoading] = useState(true);
-  // const [resultData, setresultData] = useState();
-  // const [valueData, setValueData] = useState();
-  // const [pagenums, setPageNums] = useState(1);
+  const [resultData, setresultData] = useState();
+  const [valueData, setValueData] = useState();
+  const [pagenums, setPageNums] = useState(1);
 
   const { data: maindata } = useQuery({
-    queryKey: ["getDrbEasyDrugList", productName],
+    queryKey: ["getDrbEasyDrugList", productName , pagenums],
     queryFn: getMainBasic,
   });
-  // useEffect(() => {
-  //   try {
-  //     setresultData(maindata);
-  //     setValueData(maindata?.body?.items);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [maindata]);
+  useEffect(() => {
+    try {
+      setresultData(maindata);
+      setValueData(maindata?.body?.items);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [maindata]);
 
-  // const axiosData = async () => {
-  //   try {
-  //     let page = (resultData.body.pageNo += 1);
-  //     setPageNums(page);
-  //     if (resultData.body.pageNo <= resultData.body.totalCount) {
-  //       setValueData(valueData.concat(resultData));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // console.log(pagenums);
+  const axiosData = async () => {
+    try {
+      let page = (resultData.body.pageNo += 1);
+      setPageNums(page);
+      if (resultData.body.pageNo <= resultData.body.totalCount) {
+        setValueData(valueData.concat(page));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(pagenums);
   // /////////////////////////////////////////////////////////////////////////////
 
   useEffect(() => {
@@ -203,12 +203,12 @@ export const Home = () => {
                 <Errors>{errors?.usertext?.message}</Errors>
               </FormWrap>
             </Section01>
-            {/* {valueData && (
+            {valueData && (
         <InfiniteScroll
           dataLength={valueData.length}
           next={axiosData}
           hasMore={true}
-        > */}
+        >
             {dataValue && dataValue.length > 0 ? (
               <Hcontainer condata={dataValue} />
             ) : (
@@ -217,8 +217,8 @@ export const Home = () => {
               </>
             )}
 
-            {/* </InfiniteScroll>
-      )} */}
+            </InfiniteScroll>
+      )}
           </Wrap>
         </>
       )}
